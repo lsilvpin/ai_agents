@@ -11,10 +11,11 @@ class AgentsRepository:
         self.settings_tool = settings_tool
         self.log_tool = log_tool
 
-    def create_agent(self, nome: str, papel: str, objetivo: str) -> dict:
+    def create_agent(self, nome: str, papel: str, objetivo: str, image_url: str) -> dict:
         assert nome is not None, "Nome cannot be None"
         assert papel is not None, "Papel cannot be None"
         assert objetivo is not None, "Objetivo cannot be None"
+        assert image_url is not None, "Image URL cannot be None"
         notion_protocol: str = self.settings_tool.get("NOTION_PROTOCOL")
         assert notion_protocol is not None, "NOTION_PROTOCOL cannot be None"
         notion_host: str = self.settings_tool.get("NOTION_HOST")
@@ -73,7 +74,7 @@ class AgentsRepository:
                         "caption": [],
                         "type": "external",
                         "external": {
-                            "url": "https://images.unsplash.com/photo-1513097633097-329a3a64e0d4?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb",
+                            "url": image_url,
                         },
                     },
                 }

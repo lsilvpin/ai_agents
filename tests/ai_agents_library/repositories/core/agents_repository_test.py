@@ -25,9 +25,10 @@ def test_should_create_agent(mocker):
     nome = "Exemplo de nome"
     papel = "Exemplo de Papel"
     objetivo = "Exemplo de objetivo"
+    image_url = "https://host:port/path/to/image.jpg"
 
     # Act
-    response_data: dict = agents_repository.create_agent(nome, papel, objetivo)
+    response_data: dict = agents_repository.create_agent(nome, papel, objetivo, image_url)
 
     # Assert
     assert response_data is not None
