@@ -9,6 +9,43 @@ container: Container = Container()
 agents_repository: AgentsRepository = container.agents_repository()
 
 
+def test_should_create_agent(mocker):
+    # Mocks
+    successResponse = mocker.Mock()
+    successResponse.status = 200
+    sample: str = (
+        '{"object":"page","id":"48a4c8b5-8c75-43ee-8863-505c38ffa20e","created_time":"2024-05-24T01:47:00.000Z","last_edited_time":"2024-05-24T01:47:00.000Z","created_by":{"object":"user","id":"27910b45-ae07-403c-b7e9-35b5adc896af"},"last_edited_by":{"object":"user","id":"27910b45-ae07-403c-b7e9-35b5adc896af"},"cover":null,"icon":{"type":"emoji","emoji":"👩🏻‍💻"},"parent":{"type":"database_id","database_id":"6301f640-e21c-4526-a72e-d96e7d4ba71d"},"archived":false,"in_trash":false,"properties":{"Papel":{"id":"PqtR","type":"rich_text","rich_text":[{"type":"text","text":{"content":"Exemplo de Papel","link":null},"annotations":{"bold":false,"italic":false,"strikethrough":false,"underline":false,"code":false,"color":"default"},"plain_text":"Exemplo de Papel","href":null}]},"Objetivo":{"id":"TF%7BM","type":"rich_text","rich_text":[{"type":"text","text":{"content":"Exemplo de objetivo","link":null},"annotations":{"bold":false,"italic":false,"strikethrough":false,"underline":false,"code":false,"color":"default"},"plain_text":"Exemplo de objetivo","href":null}]},"Nome":{"id":"title","type":"title","title":[{"type":"text","text":{"content":"Exemplo de nome","link":null},"annotations":{"bold":false,"italic":false,"strikethrough":false,"underline":false,"code":false,"color":"default"},"plain_text":"Exemplo de nome","href":null}]}},"url":"https://www.notion.so/Exemplo-de-nome-48a4c8b58c7543ee8863505c38ffa20e","public_url":null,"developer_survey":"https://notionup.typeform.com/to/bllBsoI4?utm_source=postman","request_id":"ec85c21d-2495-4a2c-a5ca-8e4e1ab1bc26"}'
+    )
+    successResponse.read.return_value = sample.encode("utf-8")
+    conn = mocker.Mock()
+    conn.getresponse.return_value = successResponse
+    mocker.patch("http.client.HTTPSConnection", return_value=conn)
+
+    # Arrange
+    nome = "Exemplo de nome"
+    papel = "Exemplo de Papel"
+    objetivo = "Exemplo de objetivo"
+
+    # Act
+    response_data: dict = agents_repository.create_agent(nome, papel, objetivo)
+
+    # Assert
+    assert response_data is not None
+    assert "object" in response_data
+    assert response_data["object"] == "page"
+    assert "Nome" in response_data["properties"]
+    assert "Objetivo" in response_data["properties"]
+    assert "Papel" in response_data["properties"]
+    assert response_data["properties"]["Nome"]["title"][0]["text"]["content"] == nome
+    assert (
+        response_data["properties"]["Objetivo"]["rich_text"][0]["text"]["content"]
+        == objetivo
+    )
+    assert (
+        response_data["properties"]["Papel"]["rich_text"][0]["text"]["content"] == papel
+    )
+
+
 def test_should_get_agents(mocker):
     # Mocks
     successResponse = mocker.Mock()
