@@ -104,3 +104,34 @@ def test_should_get_agent_by_id(mocker):
     assert "Nome" in response_data["properties"]
     assert "Objetivo" in response_data["properties"]
     assert "Papel" in response_data["properties"]
+
+def test_should_get_agent_blocks(mocker):
+    # Mocks
+    successResponse = mocker.Mock()
+    successResponse.status = 200
+    sample: str = (
+        '{"object":"list","results":[{"object":"block","id":"4dd595a3-bf18-4e14-938e-95a44ac77d72","parent":{"type":"page_id","page_id":"48a4c8b5-8c75-43ee-8863-505c38ffa20e"},"created_time":"2024-05-24T01:47:00.000Z","last_edited_time":"2024-05-24T01:47:00.000Z","created_by":{"object":"user","id":"27910b45-ae07-403c-b7e9-35b5adc896af"},"last_edited_by":{"object":"user","id":"27910b45-ae07-403c-b7e9-35b5adc896af"},"has_children":false,"archived":false,"in_trash":false,"type":"image","image":{"caption":[],"type":"external","external":{"url":"https://images.unsplash.com/photo-1513097633097-329a3a64e0d4?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb"}}}],"next_cursor":null,"has_more":false,"type":"block","block":{},"developer_survey":"https://notionup.typeform.com/to/bllBsoI4?utm_source=postman","request_id":"373070a3-4c10-4c76-bedb-d7b13357aa1e"}'
+    )
+    successResponse.read.return_value = sample.encode("utf-8")
+    conn = mocker.Mock()
+    conn.getresponse.return_value = successResponse
+    mocker.patch("http.client.HTTPSConnection", return_value=conn)
+
+    # Arrange
+    agent_id = "4c65fc9c-2ff4-462e-9493-71ebb14c22cb"
+    page_size = 100
+    start_cursor = None
+
+    # Act
+    response_data: dict = agents_repository.get_agent_blocks(agent_id, page_size, start_cursor)
+
+    # Assert
+    assert response_data is not None
+    assert "object" in response_data
+    assert response_data["object"] == "list"
+    assert "results" in response_data
+    assert response_data["results"].__len__() > 0
+    assert response_data["results"][0]["type"] == "image"
+    assert "image" in response_data["results"][0]
+    assert response_data["results"][0]["image"]["type"] == "external"
+    assert response_data["results"][0]["image"]["external"]["url"] is not None
