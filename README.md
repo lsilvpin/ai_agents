@@ -16,16 +16,23 @@ Simulador de agentes via IA generativa
 - 🐳 **Containerização**: Pronto para Docker e CI/CD
 - 📚 **Documentação OpenAPI**: Swagger UI disponível em `/docs`
 
-## Documentação Detalhada
+## Documentação Detalhada / Detailed Documentation
 
 Para uma explicação completa da estrutura do projeto, arquitetura e funcionamento, consulte:
 
-📖 **[ESTRUTURA_PROJETO.md](ESTRUTURA_PROJETO.md)** - Documentação detalhada com:
+📖 **[ESTRUTURA_PROJETO.md](ESTRUTURA_PROJETO.md)** (Português) - Documentação detalhada com:
 - Diagrama completo da árvore de arquivos e pastas
 - Explicação da arquitetura em camadas
 - Descrição de cada componente
 - Tecnologias utilizadas
 - Instruções de deploy e execução
+
+📖 **[PROJECT_STRUCTURE.md](PROJECT_STRUCTURE.md)** (English) - Detailed documentation with:
+- Complete file and folder tree diagram
+- Layered architecture explanation
+- Component descriptions
+- Technologies used
+- Deployment and execution instructions
 
 ## Início Rápido
 
@@ -118,7 +125,9 @@ ai_agents/
 └── Base.Dockerfile          # Container Docker
 ```
 
-Para mais detalhes, veja [ESTRUTURA_PROJETO.md](ESTRUTURA_PROJETO.md)
+Para mais detalhes, veja:
+- [ESTRUTURA_PROJETO.md](ESTRUTURA_PROJETO.md) (Português)
+- [PROJECT_STRUCTURE.md](PROJECT_STRUCTURE.md) (English)
 
 ## Tecnologias
 
